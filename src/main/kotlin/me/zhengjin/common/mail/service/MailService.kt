@@ -25,6 +25,13 @@ class MailService(
     @Value("\${spring.mail.username}")
     lateinit var from: String
 
+    companion object {
+        private const val EMPTY = ""
+        fun getMailTemplate(templateName: String): String {
+            return Companion::class.java.getResourceAsStream("/template/mail/$templateName.html")?.readBytes()?.decodeToString() ?: EMPTY
+        }
+    }
+
     fun mailAddressCheck(mailAddress: String) {
         val email =
             Regex("^(([^<>()\\[\\]\\\\.,;:\\s@\"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$")
